@@ -1,1 +1,1 @@
-console.log("clicked")
+console.log("clicked");
