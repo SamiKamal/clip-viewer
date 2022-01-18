@@ -10,6 +10,7 @@
     "@types/node": "^16.11.20",
     "@types/react": "^17.0.38",
     "@types/react-dom": "^17.0.11",
+    "craco": "^0.0.3",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "5.0.0",
@@ -18,7 +19,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "cross-env INLINE_RUNTIME_CHUNK=false craco build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -39,5 +40,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.0.176",
+    "cross-env": "^7.0.3"
   }
 }
