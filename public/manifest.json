@@ -7,19 +7,14 @@
     "default_popup": "index.html",
     "default_title": "Open the popup"
   },
-  "permissions": [
-    "activeTab"
-  ],
-  "host_permissions": [
-    "https://www.twitch.tv/*",
-    "https://www.twitch.tv/"
-  ],
+  "permissions": ["activeTab"],
+  "host_permissions": ["https://www.twitch.tv/*", "https://www.twitch.tv/"],
   "content_scripts": [
     {
-      "matches": ["http://*/*", "https://*/*"],
+      "matches": ["https://www.twitch.tv/*", "https://www.twitch.tv/"],
       "js": ["./static/js/content.js"],
       "run_at": "document_idle"
-  }
+    }
   ],
   "background": {
     "service_worker": "./static/js/background.js"
