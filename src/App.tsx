@@ -1,9 +1,8 @@
-import "./App.css";
+import { useState } from "react";
+console.log("Hello World");
 
-export const App = () => {
-  return (
-    <div className="App">
-      <header className="App-header">There's nothing to find here.</header>
-    </div>
-  );
-};
+function App() {
+  return <h1>App was injected.</h1>;
+}
+
+export default App;
