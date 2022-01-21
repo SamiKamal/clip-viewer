@@ -1,4 +1,10 @@
+import { DialogOverlay, DialogContent } from "@reach/dialog";
+import { useState } from "react";
+
 function App() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [isWatchingClip, setIsWatchingClip] = useState(false);
+
   Array.from(document.querySelectorAll(".link-fragment.tw-link")).forEach(
     (element) => {
       if (
@@ -12,11 +18,24 @@ function App() {
       ) {
         element.addEventListener("click", (el) => {
           el.preventDefault();
+          setIsWatchingClip(true);
+          setIsOpen(true);
         });
       }
     }
   );
-  return <h1 style={{ zIndex: 99999999 }}>App was injected.</h1>;
+
+  if (isWatchingClip) {
+    return (
+      <DialogOverlay isOpen={isOpen} onDismiss={() => setIsOpen(false)}>
+        <DialogContent>
+          <span onClick={() => setIsOpen(false)}>some content</span>
+        </DialogContent>
+      </DialogOverlay>
+    );
+  }
+
+  return <h1>App was Injected.</h1>;
 }
 
 export default App;
