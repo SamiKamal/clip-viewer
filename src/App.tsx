@@ -1,8 +1,10 @@
 import { DialogOverlay, DialogContent } from "@reach/dialog";
 import { useState } from "react";
 import styled from "styled-components";
+import getClipLink from "./util/getClipLink";
 
 function App() {
+  const [clipLink, setClipLink] = useState<string>("");
   const [isOpen, setIsOpen] = useState(false);
   const [isWatchingClip, setIsWatchingClip] = useState(false);
 
@@ -21,6 +23,7 @@ function App() {
           el.preventDefault();
           setIsWatchingClip(true);
           setIsOpen(true);
+          setClipLink(getClipLink(element.getAttribute("href") as string));
         });
       }
     }
@@ -33,7 +36,7 @@ function App() {
           <iframe
             width="560"
             height="315"
-            src="https://www.youtube.com/embed/r94vuvwUSkY"
+            src={clipLink}
             title="YouTube video player"
             frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
