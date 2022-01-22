@@ -1,5 +1,6 @@
 import { DialogOverlay, DialogContent } from "@reach/dialog";
 import { useState } from "react";
+import styled from "styled-components";
 
 function App() {
   const [isOpen, setIsOpen] = useState(false);
@@ -27,15 +28,44 @@ function App() {
 
   if (isWatchingClip) {
     return (
-      <DialogOverlay isOpen={isOpen} onDismiss={() => setIsOpen(false)}>
-        <DialogContent>
-          <span onClick={() => setIsOpen(false)}>some content</span>
-        </DialogContent>
-      </DialogOverlay>
+      <Overlay isOpen={isOpen} onDismiss={() => setIsOpen(false)}>
+        <Content>
+          <iframe
+            width="560"
+            height="315"
+            src="https://www.youtube.com/embed/r94vuvwUSkY"
+            title="YouTube video player"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          ></iframe>
+        </Content>
+      </Overlay>
     );
   }
 
   return <h1>App was Injected.</h1>;
 }
+
+const Overlay = styled(DialogOverlay)`
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0 0 0 / 0.4);
+  z-index: 1;
+`;
+
+const Content = styled(DialogContent)`
+  background-color: #000000d9;
+  position: relative;
+  top: 50%;
+  left: 50%;
+  width: fit-content;
+  transform: translate(-50%, -50%);
+`;
 
 export default App;
