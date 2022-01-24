@@ -1,6 +1,7 @@
 import { DialogOverlay, DialogContent } from "@reach/dialog";
-import { useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import styled from "styled-components";
+import addEventListenerToLinks from "./util/addEventListenerToLinks";
 import getClipLink from "./util/getClipLink";
 
 function App() {
@@ -8,26 +9,39 @@ function App() {
   const [isOpen, setIsOpen] = useState(false);
   const [isWatchingClip, setIsWatchingClip] = useState(false);
 
-  Array.from(document.querySelectorAll(".link-fragment.tw-link")).forEach(
-    (element) => {
-      if (
-        element.getAttribute("href") &&
-        (/^https:\/\/clips\.twitch\.tv\/(?!embed)\S+/.test(
-          element.getAttribute("href") as string
-        ) ||
-          /^https:\/\/www\.twitch\.tv\/(\S+)\/(clip)\/\S+/.test(
-            element.getAttribute("href") as string
-          ))
-      ) {
-        element.addEventListener("click", (el) => {
-          el.preventDefault();
-          setIsWatchingClip(true);
-          setIsOpen(true);
-          setClipLink(getClipLink(element.getAttribute("href") as string));
-        });
+  const clickHandler = useCallback((e: Event) => {
+    e.preventDefault();
+    setIsWatchingClip(true);
+    setIsOpen(true);
+    setClipLink(
+      getClipLink(
+        (e?.target as HTMLAnchorElement)?.getAttribute("href") as string
+      )
+    );
+  }, []);
+
+  useEffect(() => {
+    const targetNode = document.querySelector(
+      ".Layout-sc-nxg1ff-0.lgtHpz.chat-scrollable-area__message-container"
+    );
+    // Options for the observer (which mutations to observe)
+    const config = { childList: true, subtree: true };
+
+    // Callback function to execute when mutations are observed
+    const observerCallback = function (mutationsList: MutationRecord[]) {
+      for (const mutation of mutationsList) {
+        if (
+          (mutation.addedNodes[0] as HTMLElement)?.querySelector(
+            ".link-fragment"
+          )
+        ) {
+          addEventListenerToLinks(clickHandler);
+        }
       }
-    }
-  );
+    };
+    const observer = new MutationObserver(observerCallback);
+    observer.observe(targetNode as HTMLElement, config);
+  }, []);
 
   if (isWatchingClip) {
     return (
@@ -47,7 +61,7 @@ function App() {
     );
   }
 
-  return <h1>App was Injected.</h1>;
+  return null;
 }
 
 const Overlay = styled(DialogOverlay)`
