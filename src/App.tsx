@@ -1,8 +1,10 @@
 import { DialogOverlay, DialogContent } from "@reach/dialog";
 import { useEffect, useState, useCallback } from "react";
+import Draggable from "react-draggable";
 import styled from "styled-components";
 import addEventListenerToLinks from "./util/addEventListenerToLinks";
 import getClipLink from "./util/getClipLink";
+import { MdOutlineDragIndicator } from "react-icons/md";
 
 function App() {
   const [clipLink, setClipLink] = useState<string>("");
@@ -47,15 +49,20 @@ function App() {
     return (
       <Overlay isOpen={isOpen} onDismiss={() => setIsOpen(false)}>
         <Content>
-          <iframe
-            width="560"
-            height="315"
-            src={clipLink}
-            title="YouTube video player"
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          ></iframe>
+          <DraggablePerformant>
+            <div>
+              <DragIcon />
+              <iframe
+                width="560"
+                height="315"
+                src={clipLink}
+                title="YouTube video player"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              ></iframe>
+            </div>
+          </DraggablePerformant>
         </Content>
       </Overlay>
     );
@@ -77,12 +84,20 @@ const Overlay = styled(DialogOverlay)`
 `;
 
 const Content = styled(DialogContent)`
-  background-color: #000000d9;
   position: relative;
   top: 50%;
   left: 50%;
   width: fit-content;
-  transform: translate(-50%, -50%);
+  /* transform: translate(-50%, -50%); */
+`;
+
+const DragIcon = styled(MdOutlineDragIndicator)`
+  font-size: 32px;
+  cursor: pointer;
+`;
+
+const DraggablePerformant = styled(Draggable)`
+  will-change: transform;
 `;
 
 export default App;
