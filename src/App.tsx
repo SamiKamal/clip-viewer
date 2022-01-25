@@ -47,10 +47,15 @@ function App() {
 
   if (isWatchingClip) {
     return (
-      <Overlay isOpen={isOpen} onDismiss={() => setIsOpen(false)}>
+      <Overlay
+        dangerouslyBypassFocusLock
+        dangerouslyBypassScrollLock
+        isOpen={isOpen}
+        onDismiss={() => setIsOpen(false)}
+      >
         <Content>
-          <DraggablePerformant>
-            <div>
+          <Draggable bounds="body">
+            <DraggableInnerWrapper>
               <DragIcon />
               <iframe
                 width="560"
@@ -61,8 +66,8 @@ function App() {
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
               ></iframe>
-            </div>
-          </DraggablePerformant>
+            </DraggableInnerWrapper>
+          </Draggable>
         </Content>
       </Overlay>
     );
@@ -79,16 +84,13 @@ const Overlay = styled(DialogOverlay)`
   top: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0 0 0 / 0.4);
-  z-index: 1;
+  z-index: 9999;
+  pointer-events: none;
 `;
 
 const Content = styled(DialogContent)`
   position: relative;
-  top: 50%;
-  left: 50%;
   width: fit-content;
-  /* transform: translate(-50%, -50%); */
 `;
 
 const DragIcon = styled(MdOutlineDragIndicator)`
@@ -96,8 +98,10 @@ const DragIcon = styled(MdOutlineDragIndicator)`
   cursor: pointer;
 `;
 
-const DraggablePerformant = styled(Draggable)`
+const DraggableInnerWrapper = styled.div`
+  pointer-events: all;
   will-change: transform;
+  background-color: #0e0e10;
 `;
 
 export default App;
