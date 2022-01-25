@@ -4,7 +4,7 @@ import Draggable from "react-draggable";
 import styled from "styled-components";
 import addEventListenerToLinks from "./util/addEventListenerToLinks";
 import getClipLink from "./util/getClipLink";
-import { MdOutlineDragIndicator } from "react-icons/md";
+import { MdOutlineDragIndicator, MdClose } from "react-icons/md";
 
 function App() {
   const [clipLink, setClipLink] = useState<string>("");
@@ -56,7 +56,6 @@ function App() {
         <Content>
           <Draggable bounds="body">
             <DraggableInnerWrapper>
-              <DragIcon />
               <iframe
                 width="560"
                 height="315"
@@ -66,6 +65,13 @@ function App() {
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
               ></iframe>
+              <ButtonsWrapper>
+                <button onClick={() => setIsOpen(false)}>
+                  <CloseButton />
+                </button>
+
+                <DragIcon />
+              </ButtonsWrapper>
             </DraggableInnerWrapper>
           </Draggable>
         </Content>
@@ -99,9 +105,21 @@ const DragIcon = styled(MdOutlineDragIndicator)`
 `;
 
 const DraggableInnerWrapper = styled.div`
+  display: flex;
   pointer-events: all;
   will-change: transform;
   background-color: #0e0e10;
+`;
+
+const ButtonsWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`;
+
+const CloseButton = styled(MdClose)`
+  font-size: 30px;
+  text-align: center;
 `;
 
 export default App;
