@@ -1,15 +1,27 @@
 import { DialogOverlay, DialogContent } from "@reach/dialog";
 import { useEffect, useState, useCallback } from "react";
-import Draggable from "react-draggable";
+import Draggable, { DraggableData, DraggableEvent } from "react-draggable";
 import styled from "styled-components";
 import addEventListenerToLinks from "./util/addEventListenerToLinks";
 import getClipLink from "./util/getClipLink";
 import { MdOutlineDragIndicator, MdClose } from "react-icons/md";
 
+function getDefaultPosition(e: DraggableEvent, data: DraggableData) {
+  localStorage.setItem(
+    "defaultPosition",
+    JSON.stringify({ x: data.x, y: data.y })
+  );
+}
+
 function App() {
   const [clipLink, setClipLink] = useState<string>("");
   const [isOpen, setIsOpen] = useState(false);
   const [isWatchingClip, setIsWatchingClip] = useState(false);
+  const defaultPosition: { x: number; y: number } = localStorage.getItem(
+    "defaultPosition"
+  )
+    ? JSON.parse(localStorage.getItem("defaultPosition") || "")
+    : { x: 0, y: 0 };
 
   const clickHandler = useCallback((e: Event) => {
     e.preventDefault();
@@ -54,7 +66,11 @@ function App() {
         onDismiss={() => setIsOpen(false)}
       >
         <Content>
-          <Draggable bounds="body">
+          <Draggable
+            bounds="body"
+            defaultPosition={defaultPosition}
+            onDrag={getDefaultPosition}
+          >
             <DraggableInnerWrapper>
               <iframe
                 width="560"
