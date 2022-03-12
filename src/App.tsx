@@ -36,7 +36,7 @@ function App() {
 
   useEffect(() => {
     const targetNode = document.querySelector(
-      ".Layout-sc-nxg1ff-0.lgtHpz.chat-scrollable-area__message-container"
+      ".chat-scrollable-area__message-container"
     );
     // Options for the observer (which mutations to observe)
     const config = { childList: true, subtree: true };
@@ -49,11 +49,15 @@ function App() {
             ".link-fragment"
           )
         ) {
+          console.log("dfdf");
+
           addEventListenerToLinks(clickHandler);
         }
       }
     };
     const observer = new MutationObserver(observerCallback);
+    console.log(targetNode);
+
     observer.observe(targetNode as HTMLElement, config);
   }, []);
 
