@@ -5,6 +5,7 @@ import styled from "styled-components";
 import addEventListenerToLinks from "./util/addEventListenerToLinks";
 import getClipLink from "./util/getClipLink";
 import { MdOutlineDragIndicator, MdClose } from "react-icons/md";
+import waitForElem from "./util/waitForElem";
 
 function getDefaultPosition(e: DraggableEvent, data: DraggableData) {
   localStorage.setItem(
@@ -35,30 +36,31 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const targetNode = document.querySelector(
-      ".chat-scrollable-area__message-container"
-    );
-    // Options for the observer (which mutations to observe)
-    const config = { childList: true, subtree: true };
+    waitForElem(".chat-scrollable-area__message-container").then(
+      (targetNode) => {
+        // Options for the observer (which mutations to observe)
+        const config = { childList: true, subtree: true };
 
-    // Callback function to execute when mutations are observed
-    const observerCallback = function (mutationsList: MutationRecord[]) {
-      for (const mutation of mutationsList) {
-        if (
-          (mutation.addedNodes[0] as HTMLElement)?.querySelector(
-            ".link-fragment"
-          )
-        ) {
-          console.log("dfdf");
+        // Callback function to execute when mutations are observed
+        const observerCallback = function (mutationsList: MutationRecord[]) {
+          for (const mutation of mutationsList) {
+            if (
+              (mutation.addedNodes[0] as HTMLElement)?.querySelector(
+                ".link-fragment"
+              )
+            ) {
+              console.log("dfdf");
 
-          addEventListenerToLinks(clickHandler);
-        }
+              addEventListenerToLinks(clickHandler);
+            }
+          }
+        };
+        const observer = new MutationObserver(observerCallback);
+        console.log(targetNode);
+
+        observer.observe(targetNode as HTMLElement, config);
       }
-    };
-    const observer = new MutationObserver(observerCallback);
-    console.log(targetNode);
-
-    observer.observe(targetNode as HTMLElement, config);
+    );
   }, []);
 
   if (isWatchingClip) {
