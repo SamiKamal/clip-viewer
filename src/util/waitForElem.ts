@@ -1,4 +1,4 @@
-export default function waitForElm(selector: string): Promise<Element | null> {
+export default function waitForElem(selector: string): Promise<Element | null> {
   return new Promise((resolve) => {
     if (document.querySelector(selector)) {
       return resolve(document.querySelector(selector));
